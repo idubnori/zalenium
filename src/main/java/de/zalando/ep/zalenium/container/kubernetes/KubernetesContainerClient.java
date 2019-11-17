@@ -610,17 +610,17 @@ public class KubernetesContainerClient implements ContainerClient {
                         .endResources()
                         // Add a readiness health check so that we can know when the selenium pod is ready to accept requests
                         // so then we can initiate a registration.
-                        .withNewReadinessProbe()
-                            .withNewExec()
-                                .addToCommand(new String[] {"/bin/sh", "-c", "http_proxy=\"\" curl -s http://`hostname -i`:"
-                                        + config.getNodePort() + "/wd/hub/status | jq .value.ready | grep true"})
-                            .endExec()
-                            .withInitialDelaySeconds(5)
-                            .withFailureThreshold(60)
-                            .withPeriodSeconds(1)
-                            .withTimeoutSeconds(5)
-                            .withSuccessThreshold(1)
-                        .endReadinessProbe()
+                        // .withNewReadinessProbe()
+                        //     .withNewExec()
+                        //         .addToCommand(new String[] {"/bin/sh", "-c", "http_proxy=\"\" curl -s http://`hostname -i`:"
+                        //                 + config.getNodePort() + "/wd/hub/status | jq .value.ready | grep true"})
+                        //     .endExec()
+                        //     .withInitialDelaySeconds(5)
+                        //     .withFailureThreshold(60)
+                        //     .withPeriodSeconds(1)
+                        //     .withTimeoutSeconds(5)
+                        //     .withSuccessThreshold(1)
+                        // .endReadinessProbe()
                     .endContainer()
                     .withRestartPolicy("Never")
                     .withImagePullSecrets(config.getImagePullSecrets())
