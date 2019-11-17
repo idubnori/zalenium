@@ -12,12 +12,12 @@ echo "TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST}"
 cat scm-source.json
 
 # if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ -n "${TRAVIS_TAG}" ] && [ "${TRAVIS_TAG}" != "latest" ]; then
-	echo "Building image..."
+	echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    echo "Building image..."
 	mvn clean package -Pbuild-docker-image -DskipTests=true
 	echo "Starting to push Zalenium image..."
     docker images
-	echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    echo "Logged in to docker with user '${DOCKER_USERNAME}'"
+	echo "Logged in to docker with user '${DOCKER_USERNAME}'"
     echo "docker tag and docker push using TRAVIS_TAG=${TRAVIS_TAG}"
     docker tag zalenium:3.141.59v-SNAPSHOT idubnori/zalenium:build-${TRAVIS_BUILD_NUMBER}
     docker push idubnori/zalenium:build-${TRAVIS_BUILD_NUMBER} | tee docker_push.log
